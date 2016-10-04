@@ -7,80 +7,125 @@ class ViewController: UIViewController {
   @IBOutlet weak var accelerationLabel: UILabel!
   @IBOutlet weak var armLabel: UILabel!
   @IBOutlet weak var gyroscopeLabel: UILabel!
+  @IBOutlet weak var lockLabel: UILabel!
   
   var currentPose: TLMPose!
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    let notifer = NSNotificationCenter.defaultCenter()
+    let notifer = NotificationCenter.default
 
     // Data notifications are received through NSNotificationCenter.
-    notifer.addObserver(self, selector: "didConnectDevice:", name: TLMHubDidConnectDeviceNotification, object: nil)
-    notifer.addObserver(self, selector: "didDisconnectDevice:", name: TLMHubDidDisconnectDeviceNotification, object: nil)
-    // Posted whenever the user does a Sync Gesture, and the Myo is calibrated
-    notifer.addObserver(self, selector: "didRecognizeArm:", name: TLMMyoDidReceiveArmRecognizedEventNotification, object: nil)
-    // Posted whenever Myo loses its calibration (when Myo is taken off, or moved enough on the user's arm)
-    notifer.addObserver(self, selector: "didLoseArm:", name: TLMMyoDidReceiveArmLostEventNotification, object: nil)
+    // Posted whenever a TLMMyo connects
+    notifer.addObserver(self, selector: #selector(ViewController.didConnectDevice(_:)), name: NSNotification.Name.TLMHubDidConnectDevice, object: nil)
+    
+    // Posted whenever a TLMMyo disconnects.
+    notifer.addObserver(self, selector: #selector(ViewController.didDisconnectDevice(_:)), name: NSNotification.Name.TLMHubDidDisconnectDevice, object: nil)
+    
+    // Posted whenever the user does a successful Sync Gesture.
+    notifer.addObserver(self, selector: #selector(ViewController.didSyncArm(_:)), name: NSNotification.Name.TLMMyoDidReceiveArmSyncEvent, object: nil)
+    
+    // Posted whenever Myo loses sync with an arm (when Myo is taken off, or moved enough on the user's arm).
+    notifer.addObserver(self, selector: #selector(ViewController.didUnSyncArm(_:)), name: NSNotification.Name.TLMMyoDidReceiveArmUnsyncEvent, object: nil)
 
-    // Notifications for orientation event are posted at a rate of 50 Hz.
-    notifer.addObserver(self, selector: "didRecieveOrientationEvent:", name: TLMMyoDidReceiveOrientationEventNotification, object: nil)
-    // Notifications accelerometer event are posted at a rate of 50 Hz.
-    notifer.addObserver(self, selector: "didRecieveAccelerationEvent:", name: TLMMyoDidReceiveAccelerometerEventNotification, object: nil)
-    // Posted when one of the pre-configued geatures is recognized (e.g. Fist, Wave In, Wave Out, etc)
-    notifer.addObserver(self, selector: "didChangePose:", name: TLMMyoDidReceivePoseChangedNotification, object: nil)
-    notifer.addObserver(self, selector: "didRecieveGyroScopeEvent:", name: TLMMyoDidReceiveGyroscopeEventNotification, object: nil)
+    // Posted whenever Myo is unlocked and the application uses TLMLockingPolicyStandard.
+    notifer.addObserver(self, selector: #selector(ViewController.didUnlockDevice(_:)), name: NSNotification.Name.TLMMyoDidReceiveUnlockEvent, object: nil)
+    
+    // Posted whenever Myo is locked and the application uses TLMLockingPolicyStandard.
+    notifer.addObserver(self, selector: #selector(ViewController.didLockDevice(_:)), name: NSNotification.Name.TLMMyoDidReceiveLockEvent, object: nil)
+    
+    // Posted when a new orientation event is available from a TLMMyo. Notifications are posted at a rate of 50 Hz.
+    notifer.addObserver(self, selector: #selector(ViewController.didReceiveOrientationEvent(_:)), name: NSNotification.Name.TLMMyoDidReceiveOrientationEvent, object: nil)
+    
+    // Posted when a new accelerometer event is available from a TLMMyo. Notifications are posted at a rate of 50 Hz.
+    notifer.addObserver(self, selector: #selector(ViewController.didReceiveAccelerometerEvent(_:)), name: NSNotification.Name.TLMMyoDidReceiveAccelerometerEvent, object: nil)
+    
+    // Posted when a new pose is available from a TLMMyo.
+    notifer.addObserver(self, selector: #selector(ViewController.didReceivePoseChange(_:)), name: NSNotification.Name.TLMMyoDidReceivePoseChanged, object: nil)
+    
+    /*notifer.addObserver(self, selector: "didRecieveGyroScopeEvent:", name: TLMMyoDidReceiveGyroscopeEventNotification, object: nil)*/
   }
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
   }
   
-  @IBAction func didTapSettings(sender: AnyObject) {
+  @IBAction func didTapSettings(_ sender: AnyObject) {
     // Settings view must be in a navigation controller when presented
     let controller = TLMSettingsViewController.settingsInNavigationController()
-    presentViewController(controller, animated: true, completion: nil)
+    present(controller!, animated: true, completion: nil)
   }
   
-  func didConnectDevice(notification: NSNotification) {
+// MARK: NSNotificationCenter Methods
+    
+  func didConnectDevice(_ notification: Notification) {
     helloLabel.center = self.view.center
     
     armLabel.text = "Perform the Sync Gesture"
     helloLabel.text = "Hello Myo"
     
-    accelerationProgressBar.hidden = false
-    accelerationLabel.hidden = false
+    accelerationProgressBar.isHidden = false
+    accelerationLabel.isHidden = false
   }
 
-  func didDisconnectDevice(notification: NSNotification) {
+  func didDisconnectDevice(_ notification: Notification) {
     helloLabel.text = ""
     armLabel.text = ""
-    accelerationProgressBar.hidden = true
-    accelerationLabel.hidden = true
+    accelerationProgressBar.isHidden = true
+    accelerationLabel.isHidden = true
   }
+    
+    func didSyncArm(_ notification: Notification) {
+        
+    }
+    
+    func didUnSyncArm(_ notification: Notification) {
+        
+    }
+    
+    func didUnlockDevice(_ notification: Notification) {
+        
+    }
+    
+    func didLockDevice(_ notification: Notification) {
+        
+    }
+    
+    func didReceiveOrientationEvent(_ notification: Notification) {
+        
+    }
+    
+    func didReceiveAccelerometerEvent(_ notification: Notification) {
+        
+    }
+    
+    func didReceivePoseChange(_ notification: Notification) {
+        
+    }
 
-  func didRecognizeArm(notification: NSNotification) {
+  func didRecognizeArm(_ notification: Notification) {
     let eventData = notification.userInfo as Dictionary<NSString, TLMArmRecognizedEvent>
     let armEvent = eventData[kTLMKeyArmRecognizedEvent]!
     
     var arm = armEvent.arm == .Right ? "Right" : "Left"
     var direction = armEvent.xDirection == .TowardWrist ? "Towards Wrist" : "Toward Elbow"
     armLabel.text = "Arm: \(arm) X-Direction: \(direction)"
-    helloLabel.textColor = UIColor.blueColor()
+    helloLabel.textColor = UIColor.blue
     
     armEvent.myo.vibrateWithLength(.Short)
   }
 
-  func didLoseArm(notification: NSNotification) {
+  func didLoseArm(_ notification: Notification) {
     armLabel.text = "Perform the Sync Gesture"
     helloLabel.text = "Hello Myo"
-    helloLabel.textColor = UIColor.blackColor()
+    helloLabel.textColor = UIColor.black
     
     let eventData = notification.userInfo as Dictionary<NSString, TLMArmLostEvent>
     let armEvent = eventData[kTLMKeyArmLostEvent]!
     armEvent.myo.vibrateWithLength(.Short)
   }
 
-  func didRecieveOrientationEvent(notification: NSNotification) {
+  func didRecieveOrientationEvent(_ notification: Notification) {
     let eventData = notification.userInfo as Dictionary<NSString, TLMOrientationEvent>
     let orientationEvent = eventData[kTLMKeyOrientationEvent]!
     
@@ -94,7 +139,7 @@ class ViewController: UIViewController {
     helloLabel.layer.transform = rotationAndPerspectiveTransform
   }
 
-  func didRecieveAccelerationEvent(notification: NSNotification) {
+  func didRecieveAccelerationEvent(_ notification: Notification) {
     let eventData = notification.userInfo as Dictionary<NSString, TLMAccelerometerEvent>
     let accelerometerEvent = eventData[kTLMKeyAccelerometerEvent]!
 
@@ -108,7 +153,7 @@ class ViewController: UIViewController {
     //    accelerationLabel.text = "Acceleration (\(x), \(y), \(z))"
   }
 
-  func didChangePose(notification: NSNotification) {
+  func didChangePose(_ notification: Notification) {
     let eventData = notification.userInfo as Dictionary<NSString, TLMPose>
     currentPose = eventData[kTLMKeyPose]!
     
@@ -116,31 +161,31 @@ class ViewController: UIViewController {
     case .Fist:
       helloLabel.text = "Fist"
       helloLabel.font = UIFont(name: "Noteworthy", size: 50)
-      helloLabel.textColor = UIColor.greenColor()
+      helloLabel.textColor = UIColor.green
     case .WaveIn:
       helloLabel.text = "Wave In"
       helloLabel.font = UIFont(name: "Courier New", size: 50)
-      helloLabel.textColor = UIColor.greenColor()
+      helloLabel.textColor = UIColor.green
     case .WaveOut:
       helloLabel.text = "Wave Out";
       helloLabel.font = UIFont(name: "Snell Roundhand", size: 50)
-      helloLabel.textColor = UIColor.greenColor()
+      helloLabel.textColor = UIColor.green
     case .FingersSpread:
       helloLabel.text = "Fingers Spread";
       helloLabel.font = UIFont(name: "Chalkduster", size: 50)
-      helloLabel.textColor = UIColor.greenColor()
+      helloLabel.textColor = UIColor.green
     case .ThumbToPinky:
       self.helloLabel.text = "Thumb to Pinky";
       self.helloLabel.font = UIFont(name: "Georgia", size: 50)
-      self.helloLabel.textColor = UIColor.greenColor()
+      self.helloLabel.textColor = UIColor.green
     default: // .Rest or .Unknown
       helloLabel.text = "Hello Myo"
       helloLabel.font = UIFont(name: "Helvetica Neue", size: 50)
-      helloLabel.textColor = UIColor.blackColor()
+      helloLabel.textColor = UIColor.black
     }
   }
 
-  func didRecieveGyroScopeEvent(notification: NSNotification) {
+  func didRecieveGyroScopeEvent(_ notification: Notification) {
     let eventData = notification.userInfo as Dictionary<NSString, TLMGyroscopeEvent>
     let gyroEvent = eventData[kTLMKeyGyroscopeEvent]!
 

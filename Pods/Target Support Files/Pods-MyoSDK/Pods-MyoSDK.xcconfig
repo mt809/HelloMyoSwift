@@ -1,2 +1,0 @@
-PODS_MYOSDK_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/MyoSDK/Framework"
-PODS_MYOSDK_OTHER_LDFLAGS = -framework "CoreBluetooth" -framework "MyoKit" -framework "SystemConfiguration"
