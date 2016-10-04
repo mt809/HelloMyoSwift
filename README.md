@@ -1,9 +1,10 @@
-# MYO Demo Application for iOS
+# MYO Demo Application for iOS (Swift)
 
-Re-write of the original [Myo iOS app](https://developer.thalmic.com/downloads) that comes with the SDK in Swift.
+Re-write of the original [Myo iOS app](https://developer.thalmic.com/downloads) that comes with the SDK in Swift 3
+
+This project is originally based on: https://github.com/yagudaev/HelloMyoSwift and completely re-writting to work with the latest MyoKit 0.5.2 and upgraded to Swift 3.
 
 # Changes
 
-* Added Cocoapods for dependency managemnet.
-* Removed usless comments - the philoshipy is to keep it short and let the code speak for itself.
-* Add vibration on sync/unsync gesture - similar to the way the desktop Mac app works.
+* Upgraded to Swift 3 and works with Xcode 8.0
+* Added the latest Myo iOS SDK 0.5.2
