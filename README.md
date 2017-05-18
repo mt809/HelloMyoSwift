@@ -4,7 +4,7 @@ Extension of the original [Myo iOS app](https://developer.thalmic.com/downloads)
 
 This project is originally based on [llahiru's project] (https://github.com/llahiru/HelloMyoSwift).
 
-<img src="https://raw.githubusercontent.com/llahiru/HelloMyoSwift/master/screenshot.PNG" width="250"> 
+<img src="https://raw.githubusercontent.com/mt809/HelloMyoSwift/master/screenshot.png" width="250"> 
 
 # Changes
 
