@@ -42,7 +42,7 @@ This project is originally based on [llahiru's project] (https://github.com/llah
 
 ### Current Configuration
 
-* POSTs all gestures **except Middle Finger Spreads (MFS)** to target IP and Port 
+* POSTs all gestures **__except__ Middle Finger Spreads (MFS)** to target IP and Port 
 * A Middle Finger Spread (MFS) activates the microphone and for as long as the gesture is held. Uses Speech to Text then sends the results to the target IP and Port
 
 
