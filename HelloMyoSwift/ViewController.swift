@@ -561,8 +561,9 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, UITextFieldDele
                         }
                     }
                 }
-                
-                
+                break
+            }
+            
                 //            if lock == true {
                 //                if(self.pitch>CGFloat(mthresh)){
                 //                    //hdt.image =
@@ -590,26 +591,23 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, UITextFieldDele
                 //                    }
                 //                }
                 //            }
-                break
-            }
-            if host == 0 {
-                self.lockimg.image = #imageLiteral(resourceName: "unlocked.png")
-                
-                if (pose.type == .unknown || pose.type == .rest) {
-                    
-                    // Causes the Myo to lock after a short period.
-                    pose.myo.unlock(with: .timed)
-                } else {
-                    // Keeps the Myo unlocked until specified.
-                    // This is required to keep Myo unlocked while holding a pose, but if a pose is not being held, use
-                    // TLMUnlockTypeTimed to restart the timer.
-                    pose.myo.unlock(with: .hold)
-                    // Indicates that a user action has been performed.
-                    pose.myo.indicateUserAction()
-                    
-                }
-            }
-            
+//            if host == 0 {
+//                self.lockimg.image = #imageLiteral(resourceName: "unlocked.png")
+//                
+//                if (pose.type == .unknown || pose.type == .rest) {
+//                    
+//                    // Causes the Myo to lock after a short period.
+//                    pose.myo.unlock(with: .timed)
+//                } else {
+//                    // Keeps the Myo unlocked until specified.
+//                    // This is required to keep Myo unlocked while holding a pose, but if a pose is not being held, use
+//                    // TLMUnlockTypeTimed to restart the timer.
+//                    pose.myo.unlock(with: .hold)
+//                    // Indicates that a user action has been performed.
+//                    pose.myo.indicateUserAction()
+//                    
+//                }
+//            }
         }
         if (currentPose.type == .doubleTap || currentPose.type == .fist || currentPose.type == .fingersSpread || currentPose.type == .waveIn || currentPose.type == .waveOut) && lock == false && host == 1{
             sendcmd(text: tosend)
