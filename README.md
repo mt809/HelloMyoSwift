@@ -20,11 +20,15 @@ This project is originally based on [llahiru's project] (https://github.com/llah
 
 # Current Settings
 
+* A Very High Fist (VHF) will change the target device (if it's current target is Phone it will switch to Computer and vice versa) 
+
 ## Phone
+
 
 ### Locking Scheme
 
 * Doesn't cuz locking and unlocking all the time is annoying
+
 
 ### Media Control Settings 
 
@@ -34,11 +38,14 @@ This project is originally based on [llahiru's project] (https://github.com/llah
 
 * *Note: Media Controls seem to currently only work consisantly with Apple Music*
 
+
 ## Computer
+
 
 ### Locking Scheme
 
 * A High Double Tap (HDT) toggles the lock
+
 
 ### Current Configuration
 
